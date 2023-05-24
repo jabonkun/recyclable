@@ -56,7 +56,7 @@ class SomeClass extends Recyclable {
 }
 ```
 
-**IMPORTANT:** Recyclable must be the first module you import in your proyect, as it relies on Monkey-patching the ``Deno.exit()``, ``Deno.addSignalListener()`` abd ``Deno.removeSignalListener()`` methods. Until Deno adds proper way of handling exit events, this is the only option.
+**IMPORTANT:** Recyclable must be the first module you import in your proyect, as it relies on Monkey-patching the ``Deno.exit()``, ``Deno.addSignalListener()`` and ``Deno.removeSignalListener()`` methods. Until Deno adds proper way of handling exit events, this is the only option.
 
 <br />
 
@@ -216,7 +216,7 @@ This example is very interesting, as we can see that ``Deno.exit()`` is called w
 ## Known Issues ⚠️
 <hr />
 
-- Certain signals cannot be handled as the OS does not allows them to be handled, that means that, despite ``Recyclable`` trying it's best to make sure that ``delete()`` is called before exiting, it is not guaranteed under the circumstance that a unhandleable signal is sent. However, if the user is sending these signals, it should know that not a single program will be able to gracefully exit, so... 🤷‍♀️
+- Certain signals cannot be handled as the OS does not allows them to be handled, that means that, despite ``Recyclable`` trying it's best to make sure that ``delete()`` is called before exiting, it is not guaranteed under the circumstance that an unhandleable signal is sent. However, if the user is sending these signals, it should know that not a single program will be able to gracefully exit, so... 🤷‍♀️
 
 - Currently, it is **not possible** to detect when the console attached to the Deno process is **destroyed/detached** on Windows, such as when the user closes the command prompt. This limitation is due to the Deno runtime's lack of support for adding listeners to the ``SIGHUP`` signal. Any attempts to use ``SetConsoleCtrlHandler`` will cause Deno to panic. One possible workaround is to hide the Terminal window completely using the Windows API to prevent the user from closing the command prompt, but this approach has its own drawbacks and is beyond the scope of this library.
 
