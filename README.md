@@ -23,16 +23,15 @@
 ## Table of Contents
 <hr />
 
-- <a  href="#start">Quick Start</a>
-- <a  href="#docs">Documentation</a>
-- <a  href="#use">Usage</a>
-- <a  href="#issues">Known Issues ⚠️</a>
-- <a  href="#bugs">Suggestions and Bugs 🐞</a>
-- <a  href="#license">License</a>
+- [Quick Start](#quick-start)
+- [Documentation](#documentation)
+- [Usage](#usage)
+- [Known Issues](#known-issues)
+- [Suggestions and Bugs 🐞](#suggestions-and-bugs-)
+- [License](#license)
 
 <br />
 
-<a name="start"></a>
 ## Quick Start
 <hr />
 
@@ -60,7 +59,6 @@ class SomeClass extends Recyclable {
 
 <br />
 
-<a name="docs"></a>
 ## Documentation
 <hr />
 
@@ -107,7 +105,6 @@ However, this also introduces some **limitations**:
 
 <br />
 
-<a name="use"></a>
 ## Usage
 <hr />
 
@@ -212,8 +209,7 @@ This example is very interesting, as we can see that ``Deno.exit()`` is called w
 
 <br />
 
-<a name="issues"></a>
-## Known Issues ⚠️
+## Known Issues
 <hr />
 
 - Certain signals cannot be handled as the OS does not allows them to be handled, that means that, despite ``Recyclable`` trying it's best to make sure that ``delete()`` is called before exiting, it is not guaranteed under the circumstance that an unhandleable signal is sent. However, if the user is sending these signals, it should know that not a single program will be able to gracefully exit, so... 🤷‍♀️
@@ -222,7 +218,6 @@ This example is very interesting, as we can see that ``Deno.exit()`` is called w
 
 <br />
 
-<a name="bugs"></a>
 ## Suggestions and Bugs 🐞
 <hr />
 
@@ -230,7 +225,7 @@ Aaaand just like that you've reached the end! But remember, despite there being 
 
 <br />
 
-<a name="license"></a>
+<a id="license"></a>
 ## License
 <hr />
 
