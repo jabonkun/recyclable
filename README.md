@@ -13,7 +13,7 @@
 ## Advantages
 <hr />
 
-- 🌐 **Cross-Platform**. Works on Windows, Linux and MacOS.
+- 🌐 **Cross-Platform**. Works on Windows, Linux and MacOS (Should work on those two, not tested yet).
 - 🎉 **Portable**. Zero dependencies
 - 🔐 **Secure**. No permission flags needed
 - 📚 **Types**. Includes types declarations
