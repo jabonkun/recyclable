@@ -1,4 +1,6 @@
-<img style="height: 200px; margin-right: 50px;" src="https://raw.githubusercontent.com/jabonkun/recyclable/main/header.png">
+<p align="center">
+	<img src="https://raw.githubusercontent.com/jabonkun/recyclable/main/header.png">
+</p>
 
 <hr />
 
