@@ -25,10 +25,7 @@ export function remove<Element extends unknown>(array: Element[], element: Eleme
     if (index < 0)
         return;
 
-    for (let i = index; i < array.length; i++)
-        array[i] = array[i + 1];
-
-    array.pop();
+    array.splice(index, 1);
     return;
 }
 
@@ -43,12 +40,7 @@ export function prepend<Element extends unknown>(array: Element[], element: Elem
 }
 
 export function empty<Element extends unknown>(array: Element[]) {
-    const backup = [ ...array ];
-
-    while (array.length)
-        array.pop();
-
-    return backup;
+    return array.splice(0, array.length);
 }
 
 export function printUncaught(err: unknown) {
@@ -72,3 +64,29 @@ export function printUncaught(err: unknown) {
 
     console.error(message);
 }
+
+export function defineValue<T extends unknown>(obj: object, prop: string | symbol | number, value: T) {
+    const descriptor = Object.getOwnPropertyDescriptor(obj, prop) ?? {};
+
+    if (descriptor.get)
+        delete descriptor.get;
+
+    if (descriptor.set)
+        delete descriptor.set;
+
+    descriptor.configurable ??= true;
+    descriptor.enumerable   ??= false;
+    descriptor.writable     ??= true;
+
+    descriptor.value = value;
+
+    Object.defineProperty(obj, prop, descriptor);
+    return value;
+}
+
+export const threadUnsafe = function(parameters, callback) {
+    let cb = Deno.UnsafeCallback.threadSafe(parameters as any, callback);
+        cb.unref();
+
+    return cb;
+} as typeof Deno.UnsafeCallback.threadSafe
