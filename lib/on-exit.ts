@@ -1,4 +1,4 @@
-import { printUncaught, remove, add, prepend, empty } from './utils.ts'
+import { printUncaught, remove, add, prepend, empty, tryCall } from './utils.ts'
 import * as DarwinSignals from './signals/darwin.ts'
 import * as LinuxSignals  from './signals/linux.ts'
 import * as WinSignals    from './signals/windows.ts'
@@ -61,13 +61,8 @@ window.addEventListener('unload'            , fireListeners);
 function fireListeners() {
     const ListenersBackup = empty(Listeners);
 
-    for (let listener of ListenersBackup) {
-        try {
-            listener();
-        } catch(err: unknown) {
-            printUncaught(err);
-        }
-    }
+    for (let listener of ListenersBackup)
+        tryCall(listener);
 }
 
 export function onExit(listener: () => void) {
