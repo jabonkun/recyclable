@@ -84,6 +84,14 @@ export function defineValue<T extends unknown>(obj: object, prop: string | symbo
     return value;
 }
 
+export function tryCall(callback: () => void) {
+    try {
+        callback();
+    } catch(err: unknown) {
+        printUncaught(err);
+    }
+}
+
 export const threadUnsafe = function(parameters, callback) {
     let cb = Deno.UnsafeCallback.threadSafe(parameters as any, callback);
         cb.unref();
