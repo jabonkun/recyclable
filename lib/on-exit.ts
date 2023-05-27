@@ -1,4 +1,4 @@
-import { printUncaught, remove, add, prepend, empty, tryCall } from './utils.ts'
+import { remove, add, prepend, empty, tryCall } from './utils.ts'
 import * as DarwinSignals from './signals/darwin.ts'
 import * as LinuxSignals  from './signals/linux.ts'
 import * as WinSignals    from './signals/windows.ts'
