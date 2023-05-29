@@ -93,6 +93,10 @@ export function tryCall(callback: () => void) {
 }
 
 export const threadUnsafe = function(parameters, callback) {
+    // This simple trick allows the callback to wake up the
+    // event loop without preventing the program from
+    // exiting. Not sure if it's intentional or not. Hope it is
+
     let cb = Deno.UnsafeCallback.threadSafe(parameters as any, callback);
         cb.unref();
 

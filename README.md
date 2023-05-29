@@ -15,7 +15,6 @@
 
 - 🌐 **Cross-Platform**. Works on Windows, Linux and MacOS (Should work on those two, not tested yet).
 - 🎉 **Portable**. Zero dependencies
-- 🔐 **Secure**. No permission flags needed
 - 📚 **Types**. Includes types declarations
 
 <br />
@@ -23,12 +22,20 @@
 ## Table of Contents
 <hr />
 
+- [Changelog](#changelog)
 - [Quick Start](#quick-start)
 - [Documentation](#documentation)
 - [Usage](#usage)
 - [Known Issues](#known-issues)
 - [Suggestions and Bugs 🐞](#suggestions-and-bugs-)
 - [License](#license)
+
+<br />
+
+## Changelog
+<hr />
+
+You can read the changelogs on Recyclable's [Releases](https://github.com/jabonkun/recyclable/releases) page
 
 <br />
 
@@ -55,7 +62,9 @@ class SomeClass extends Recyclable {
 }
 ```
 
-**IMPORTANT:** Recyclable must be the first module you import in your proyect, as it relies on Monkey-patching the ``Deno.exit()``, ``Deno.addSignalListener()`` and ``Deno.removeSignalListener()`` methods. Until Deno adds proper way of handling exit events, this is the only option.
+**IMPORTANT:** Recyclable must be the first module you import in your proyect, as it relies on Monkey-patching the ``Deno.exit()``, ``Deno.addSignalListener()`` and ``Deno.removeSignalListener()`` methods. Also, to handle ``SIGHUP`` on Windows, it needs to use ``SetConsoleCtrlHandler`` which may cause some stability issues if it's not called right away. Until Deno adds proper way of handling exit events, doing this is the only option.
+
+For the flags, on Linux/MacOS you don't need any. On Windows, you need ``--unstable`` and ``--allow-ffi``. This is to handle the ``SIGHUP`` event which ins't accesible through Deno's APIs.
 
 <br />
 
@@ -203,7 +212,7 @@ Opening a handle to ./greeting.txt
 13 bytes written to ./greeting.txt. Time to exit
 Closing the handle to ./greeting.txt
 ```
-*(This example requires the ``--allow-write`` flag).*
+*(This example requires the ``--allow-write`` flag, and, if running Windows, the ``--allow-ffi`` and ``--unstable`` flags).*
 
 This example is very interesting, as we can see that ``Deno.exit()`` is called without ``WritableFile::delete()`` being called before, yet it is called anyways right after ``Deno.exit()`` gets called without preventing the program from exiting.
 
@@ -214,7 +223,9 @@ This example is very interesting, as we can see that ``Deno.exit()`` is called w
 
 - Certain signals cannot be handled as the OS does not allows them to be handled, that means that, despite ``Recyclable`` trying it's best to make sure that ``delete()`` is called before exiting, it is not guaranteed under the circumstance that an unhandleable signal is sent. However, if the user is sending these signals, it should know that not a single program will be able to gracefully exit, so... 🤷‍♀️
 
-- Currently, it is **not possible** to detect when the console attached to the Deno process is **destroyed/detached** on Windows, such as when the user closes the command prompt. This limitation is due to the Deno runtime's lack of support for adding listeners to the ``SIGHUP`` signal. Any attempts to use ``SetConsoleCtrlHandler`` ~~will cause Deno to panic~~ would require using the ``ref`` method on the ``UnsafeCallback`` which prevents the process from exiting (Looking onto this, searching a way to call ``unref`` once the ``Event Loop``'s Queue and Stack are empty). One possible workaround is to hide the Terminal window completely using the Windows API to prevent the user from closing the command prompt, but this approach has its own drawbacks and is beyond the scope of this library.
+- Recycable can't run cleanup tasks if your app is frozen (Like when it's stuck on an infinite loop). So make sure to not get the Event Loop blocked otherwise no JavaScript code is will be able to run at all.
+
+- ~~Currently, it is **not possible** to detect when the console attached to the Deno process is **destroyed/detached** on Windows, such as when the user closes the command prompt. This limitation is due to the Deno runtime's lack of support for adding listeners to the ``SIGHUP`` signal. Any attempts to use ``SetConsoleCtrlHandler`` would require using the ``ref`` method on the ``UnsafeCallback`` which prevents the process from exiting (Looking onto this, searching a way to call ``unref`` once the ``Event Loop``'s Queue and Stack are empty). One possible workaround is to hide the Terminal window completely using the Windows API to prevent the user from closing the command prompt, but this approach has its own drawbacks and is beyond the scope of this library.~~ **This has been fixed! This known issue will be removed from the README.md on future releases. However, solving this made the ``--unstable`` and ``--allow-ffi`` flags mandatory on Windows.**
 
 <br />
 
