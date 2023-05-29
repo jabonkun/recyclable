@@ -1,7 +1,7 @@
-import { onExit, offExit } from './on-exit.ts'
-import { createWeakView  } from './weak-view.ts'
-import { onGC, offGC     } from './on-gc.ts'
-import { frozenSet       } from './utils.ts'
+import { addGarbageCollectionListener, removeGarbageCollectionListener } from './listeners/garbage-collection.ts'
+import { addCleanupListener, removeCleanupListener } from './listeners/cleanup.ts'
+import { createWeakView } from './weak-view.ts'
+import { frozenSet } from './utils.ts'
 
 const CreateError = `A Recyclable instance may not call the ::create() method more than once`;
 const DeleteError = `A Recyclable instance may not call the ::delete() method more than once`;
@@ -34,8 +34,8 @@ export default abstract class Recyclable<Parameters extends unknown[] = []> {
             destroyed = true;
             ref       = null;
 
-            offExit(cleanup);
-            offGC(cleanup);
+            removeCleanupListener(cleanup);
+            removeGarbageCollectionListener(cleanup);
 
             methods.delete(This);
         }
@@ -43,8 +43,8 @@ export default abstract class Recyclable<Parameters extends unknown[] = []> {
         frozenSet(this, 'create', patchedCreate);
         frozenSet(this, 'delete', cleanup);
 
-        onExit(cleanup);
-        onGC(weakThis, cleanup);
+        addCleanupListener(cleanup);
+        addGarbageCollectionListener(weakThis, cleanup);
         
         methods.create(weakThis, ...params);
 
