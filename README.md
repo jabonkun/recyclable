@@ -64,6 +64,8 @@ class SomeClass extends Recyclable {
 
 **IMPORTANT:** Recyclable must be the first module you import in your proyect, as it relies on Monkey-patching the ``Deno.exit()``, ``Deno.addSignalListener()`` and ``Deno.removeSignalListener()`` methods. Also, to handle ``SIGHUP`` on Windows, it needs to use ``SetConsoleCtrlHandler`` which may cause some stability issues if it's not called right away. Until Deno adds proper way of handling exit events, doing this is the only option.
 
+For the flags, on Linux/MacOS you don't need any. On Windows, you need ``--unstable`` and ``--allow-ffi``. This is to handle the ``SIGHUP`` event which ins't accesible through Deno's APIs.
+
 <br />
 
 ## Documentation
