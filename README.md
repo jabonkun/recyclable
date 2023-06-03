@@ -13,7 +13,7 @@
 ## Advantages
 <hr />
 
-- 🌐 **Cross-Platform**. Works on Windows, Linux and MacOS (Should work on those two, not tested yet).
+- 🌐 **Cross-Platform**. Works on Windows, Linux and MacOS (Not tested on MacOS yet, but should work).
 - 🎉 **Portable**. Zero dependencies
 - 📚 **Types**. Includes types declarations
 
@@ -224,8 +224,6 @@ This example is very interesting, as we can see that ``Deno.exit()`` is called w
 - Certain signals cannot be handled as the OS does not allows them to be handled, that means that, despite ``Recyclable`` trying it's best to make sure that ``delete()`` is called before exiting, it is not guaranteed under the circumstance that an unhandleable signal is sent. However, if the user is sending these signals, it should know that not a single program will be able to gracefully exit, so... 🤷‍♀️
 
 - Recycable can't run cleanup tasks if your app is frozen (Like when it's stuck on an infinite loop). So make sure to not get the Event Loop blocked otherwise no JavaScript code is will be able to run at all.
-
-- ~~Currently, it is **not possible** to detect when the console attached to the Deno process is **destroyed/detached** on Windows, such as when the user closes the command prompt. This limitation is due to the Deno runtime's lack of support for adding listeners to the ``SIGHUP`` signal. Any attempts to use ``SetConsoleCtrlHandler`` would require using the ``ref`` method on the ``UnsafeCallback`` which prevents the process from exiting (Looking onto this, searching a way to call ``unref`` once the ``Event Loop``'s Queue and Stack are empty). One possible workaround is to hide the Terminal window completely using the Windows API to prevent the user from closing the command prompt, but this approach has its own drawbacks and is beyond the scope of this library.~~ **This has been fixed! This known issue will be removed from the README.md on future releases. However, solving this made the ``--unstable`` and ``--allow-ffi`` flags mandatory on Windows.**
 
 <br />
 
